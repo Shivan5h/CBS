@@ -1,0 +1,44 @@
+# Import required libraries
+import openai
+
+# Initialize OpenAI API with your API key
+openai.api_key = 'your_openai_api_key_here'
+
+def simplify_legal_text(legal_text):
+    """
+    Simplifies a legal text using OpenAI's GPT model.
+
+    Args:
+    legal_text (str): The legal document or text to be simplified.
+
+    Returns:
+    str: The simplified version of the text.
+    """
+    try:
+        # Prompt to instruct the model to simplify legal language
+        prompt = f"Please simplify the following legal text into plain, easy-to-understand language:\n\n{legal_text}\n\nSimplified version:"
+
+        # Call OpenAI's GPT model
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # Replace with "gpt-3.5-turbo" if needed
+            prompt=prompt,
+            max_tokens=500,
+            temperature=0.7
+        )
+
+        # Extract the simplified text from the response
+        simplified_text = response.choices[0].text.strip()
+        return simplified_text
+    
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+# Sample legal text for simplification
+legal_text = """
+    Pursuant to the conditions set forth in this Agreement, the Lessee shall indemnify, defend, and hold harmless the Lessor from and against any and all liabilities, losses, damages, and expenses, including but not limited to attorney's fees, arising out of or related to the Lessee's use of the Premises, except to the extent caused by the Lessor's negligence or willful misconduct.
+"""
+
+# Simplify the legal text
+simplified_text = simplify_legal_text(legal_text)
+print("Simplified Text:")
+print(simplified_text)
